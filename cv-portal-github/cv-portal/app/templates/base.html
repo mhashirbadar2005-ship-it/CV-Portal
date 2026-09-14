@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>{% block title %}Careers — {{ company }}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ request.url_for('static', path='/css/styles.css') }}">
+</head>
+<body>
+  <header class="masthead">
+    <a class="wordmark" href="{{ request.url_for('show_form') }}">
+      <svg class="wordmark-mark" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M1 7.5H21M7.5 7.5V21" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+      {{ company }}
+    </a>
+    <span class="masthead-tag">Careers</span>
+  </header>
+
+  <main class="shell">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footfine">
+    <span>Questions about a submission? Write to {{ careers_email }}.</span>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

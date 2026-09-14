@@ -1,0 +1,6 @@
+-r requirements.txt
+
+uvicorn[standard]==0.34.0    # local dev server
+pytest==9.1.1
+moto[s3,sns]==5.2.3          # fake AWS, so tests cost nothing
+httpx==0.28.1                # required by fastapi's TestClient

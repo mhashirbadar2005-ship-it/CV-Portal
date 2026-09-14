@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="brief">
+  <h1>Tell us what you build.</h1>
+  <p class="brief-lede">
+    One form, one file. We read every submission ourselves and reply within five
+    working days — whichever way the answer goes.
+  </p>
+
+  <ol class="track">
+    <li>
+      <h2>You send this form</h2>
+      <p>Your CV goes straight into private storage. The link is never public.</p>
+    </li>
+    <li>
+      <h2>A person reads it</h2>
+      <p>No keyword filter decides for us. We look at what you've shipped.</p>
+    </li>
+    <li>
+      <h2>You hear back by email</h2>
+      <p>At the address you give below, with a reference you can quote.</p>
+    </li>
+  </ol>
+
+  <p class="brief-fine">
+    We keep your name, contact details, CNIC and CV for twelve months of hiring,
+    then delete them. Files are encrypted at rest.
+  </p>
+</section>
+
+<section class="sheet" aria-labelledby="form-heading">
+  <h2 class="sheet-title" id="form-heading">Your application</h2>
+
+  {% if errors.get('form') %}
+  <p class="alert" role="alert">{{ errors['form'] }}</p>
+  {% elif errors %}
+  <p class="alert" role="alert">Nothing was sent yet — check the fields marked below.</p>
+  {% endif %}
+
+  <form method="post" action="{{ request.url_for('submit_application') }}"
+        enctype="multipart/form-data" novalidate id="apply-form">
+
+    <div class="field">
+      <label for="full_name">Full name</label>
+      <input type="text" id="full_name" name="full_name" autocomplete="name"
+             value="{{ values.get('full_name', '') }}" required
+             {% if errors.get('full_name') %}aria-invalid="true" aria-describedby="err-full_name"{% endif %}>
+      {% if errors.get('full_name') %}<p class="field-error" id="err-full_name">{{ errors['full_name'] }}</p>{% endif %}
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" autocomplete="email"
+             value="{{ values.get('email', '') }}" required
+             {% if errors.get('email') %}aria-invalid="true" aria-describedby="err-email"{% endif %}>
+      <p class="field-hint">This is where our reply goes.</p>
+      {% if errors.get('email') %}<p class="field-error" id="err-email">{{ errors['email'] }}</p>{% endif %}
+    </div>
+
+    <div class="field-pair">
+      <div class="field">
+        <label for="cnic">CNIC number</label>
+        <input type="text" id="cnic" name="cnic" inputmode="numeric" placeholder="42101-1234567-8"
+               value="{{ values.get('cnic', '') }}" required
+               {% if errors.get('cnic') %}aria-invalid="true" aria-describedby="err-cnic"{% endif %}>
+        {% if errors.get('cnic') %}<p class="field-error" id="err-cnic">{{ errors['cnic'] }}</p>{% endif %}
+      </div>
+      <div class="field">
+        <label for="phone">Mobile</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="0301 2345678"
+               value="{{ values.get('phone', '') }}" required
+               {% if errors.get('phone') %}aria-invalid="true" aria-describedby="err-phone"{% endif %}>
+        {% if errors.get('phone') %}<p class="field-error" id="err-phone">{{ errors['phone'] }}</p>{% endif %}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="portfolio_url">GitHub, LinkedIn or portfolio <span class="opt">optional</span></label>
+      <input type="url" id="portfolio_url" name="portfolio_url" placeholder="github.com/yourname"
+             value="{{ values.get('portfolio_url', '') }}"
+             {% if errors.get('portfolio_url') %}aria-invalid="true" aria-describedby="err-portfolio_url"{% endif %}>
+      {% if errors.get('portfolio_url') %}<p class="field-error" id="err-portfolio_url">{{ errors['portfolio_url'] }}</p>{% endif %}
+    </div>
+
+    <div class="field">
+      <label for="note">Anything we should know <span class="opt">optional</span></label>
+      <textarea id="note" name="note" rows="4" maxlength="1000"
+                placeholder="A project you're proud of, notice period, availability…">{{ values.get('note', '') }}</textarea>
+      {% if errors.get('note') %}<p class="field-error">{{ errors['note'] }}</p>{% endif %}
+    </div>
+
+    <div class="field">
+      <span class="label-as-text" id="cv-label">Your CV</span>
+      <label class="dropzone" id="dropzone" for="cv"
+             {% if errors.get('cv') %}data-invalid="true"{% endif %}>
+        <input type="file" id="cv" name="cv" accept="{{ accept }}" required
+               aria-describedby="cv-rules">
+        <span class="dropzone-empty" id="dz-empty">
+          <strong>Drop your file here</strong>
+          <span id="cv-rules">or click to browse — {{ extensions | join(', ') | upper }}, up to {{ max_mb }} MB</span>
+        </span>
+        <span class="dropzone-filled" id="dz-filled" hidden>
+          <span class="file-chip">
+            <span class="file-name" id="dz-name"></span>
+            <span class="file-size" id="dz-size"></span>
+          </span>
+          <button type="button" class="linkish" id="dz-clear">Choose a different file</button>
+        </span>
+      </label>
+      {% if errors.get('cv') %}<p class="field-error">{{ errors['cv'] }}</p>{% endif %}
+    </div>
+
+    <div class="field consent">
+      <label class="check">
+        <input type="checkbox" name="consent" value="true"
+               {% if values.get('consent') %}checked{% endif %} required>
+        <span>{{ company }} may store these details and my CV for recruitment.</span>
+      </label>
+      {% if errors.get('consent') %}<p class="field-error">{{ errors['consent'] }}</p>{% endif %}
+    </div>
+
+    <!-- Honeypot: hidden from people, irresistible to bots. -->
+    <div class="decoy" aria-hidden="true">
+      <label for="company_website">Company website</label>
+      <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+    </div>
+
+    <button type="submit" class="send" id="send">
+      <span class="send-label">Send application</span>
+      <span class="send-busy" hidden>Uploading…</span>
+    </button>
+  </form>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    const zone = document.getElementById('dropzone');
+    const input = document.getElementById('cv');
+    const empty = document.getElementById('dz-empty');
+    const filled = document.getElementById('dz-filled');
+    const nameEl = document.getElementById('dz-name');
+    const sizeEl = document.getElementById('dz-size');
+    const clearBtn = document.getElementById('dz-clear');
+    const form = document.getElementById('apply-form');
+    const send = document.getElementById('send');
+    const maxBytes = {{ max_mb }} * 1024 * 1024;
+
+    function human(bytes) {
+      return bytes < 1024 * 1024
+        ? Math.max(1, Math.round(bytes / 1024)) + ' KB'
+        : (bytes / 1024 / 1024).toFixed(1) + ' MB';
+    }
+
+    function render() {
+      const file = input.files && input.files[0];
+      if (!file) {
+        empty.hidden = false;
+        filled.hidden = true;
+        zone.removeAttribute('data-filled');
+        return;
+      }
+      nameEl.textContent = file.name;
+      sizeEl.textContent = human(file.size);
+      zone.dataset.oversize = file.size > maxBytes ? 'true' : '';
+      empty.hidden = true;
+      filled.hidden = false;
+      zone.setAttribute('data-filled', 'true');
+      zone.removeAttribute('data-invalid');
+    }
+
+    input.addEventListener('change', render);
+
+    clearBtn.addEventListener('click', function (event) {
+      event.preventDefault();
+      input.value = '';
+      render();
+      input.focus();
+    });
+
+    ['dragenter', 'dragover'].forEach(function (evt) {
+      zone.addEventListener(evt, function (e) {
+        e.preventDefault();
+        zone.setAttribute('data-hover', 'true');
+      });
+    });
+    ['dragleave', 'drop'].forEach(function (evt) {
+      zone.addEventListener(evt, function () { zone.removeAttribute('data-hover'); });
+    });
+    zone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      if (e.dataTransfer.files.length) {
+        input.files = e.dataTransfer.files;
+        render();
+      }
+    });
+
+    form.addEventListener('submit', function () {
+      send.disabled = true;
+      send.querySelector('.send-label').hidden = true;
+      send.querySelector('.send-busy').hidden = false;
+    });
+
+    render();
+  })();
+</script>
+{% endblock %}

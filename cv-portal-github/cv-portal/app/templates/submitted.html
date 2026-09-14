@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Application sent — {{ company }}{% endblock %}
+
+{% block content %}
+<section class="brief">
+  <h1>That's in.</h1>
+  <p class="brief-lede">
+    Your CV is stored and the hiring team has been notified. Nothing else is
+    needed from you right now.
+  </p>
+  {% if reference %}
+  <p class="brief-fine">Quote this reference if you write to us: <strong>{{ reference }}</strong></p>
+  {% endif %}
+</section>
+
+<section class="sheet sheet-quiet">
+  <h2 class="sheet-title">What happens next</h2>
+  <ol class="track track-tight">
+    <li>
+      <h2>Review</h2>
+      <p>Someone reads your CV within five working days.</p>
+    </li>
+    <li>
+      <h2>A short call</h2>
+      <p>If it's a fit, we'll email you two or three time slots.</p>
+    </li>
+    <li>
+      <h2>A build task</h2>
+      <p>Small, paid, and close to the work you'd actually be doing.</p>
+    </li>
+  </ol>
+  <a class="send send-secondary" href="{{ request.url_for('show_form') }}">Send another application</a>
+</section>
+{% endblock %}

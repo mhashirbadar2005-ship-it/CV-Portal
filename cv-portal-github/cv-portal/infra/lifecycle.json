@@ -1,0 +1,10 @@
+{
+  "Rules": [
+    {
+      "ID": "DeleteSubmissionsAfter12Months",
+      "Status": "Enabled",
+      "Filter": { "Prefix": "submissions/" },
+      "Expiration": { "Days": 365 }
+    }
+  ]
+}

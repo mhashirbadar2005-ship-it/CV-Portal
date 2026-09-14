@@ -1,0 +1,29 @@
+{
+  "_comment": "Paste this into the Lambda console Test tab to check the function without API Gateway. A working response has statusCode 200 and an HTML body. Delete this _comment line first if the console complains.",
+  "version": "2.0",
+  "routeKey": "$default",
+  "rawPath": "/",
+  "rawQueryString": "",
+  "headers": {
+    "host": "example.execute-api.ap-south-1.amazonaws.com",
+    "user-agent": "lambda-console-test",
+    "x-forwarded-proto": "https",
+    "x-forwarded-port": "443"
+  },
+  "requestContext": {
+    "accountId": "123456789012",
+    "apiId": "example",
+    "domainName": "example.execute-api.ap-south-1.amazonaws.com",
+    "http": {
+      "method": "GET",
+      "path": "/",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "39.55.1.1",
+      "userAgent": "lambda-console-test"
+    },
+    "requestId": "console-test-1",
+    "routeKey": "$default",
+    "stage": "$default"
+  },
+  "isBase64Encoded": false
+}

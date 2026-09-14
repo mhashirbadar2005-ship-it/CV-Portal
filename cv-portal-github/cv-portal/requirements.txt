@@ -1,0 +1,15 @@
+# Pinned to the exact versions this project was built and tested against.
+# Upgrade deliberately, one line at a time, with the test suite as your check.
+
+# --- web layer ---
+fastapi==0.141.1
+starlette==1.6.0
+jinja2==3.1.6
+python-multipart==0.0.32     # without this, multipart/form-data uploads fail
+pydantic==2.13.5
+pydantic-settings==2.15.0
+email-validator==2.3.0       # backs pydantic's EmailStr
+
+# --- aws ---
+boto3==1.43.89
+mangum==0.22.0               # translates Lambda events into ASGI calls
