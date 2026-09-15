@@ -1,10 +1,5 @@
 """SNS notifications for the recruiting inbox.
 
-SNS email is deliberately simple: plain text only, no HTML, no attachments, and
-the "From" address is always AWS's. That is fine for an internal alert. If you
-ever need branded email or the CV attached, switch this module to SES.
-"""
-
 from __future__ import annotations
 
 import logging
