@@ -1,6 +1,5 @@
 # Container image for AWS Lambda. Chosen over a zip because the dependency tree
 # (fastapi + pydantic + boto3) is awkward to pack into a 250 MB unzipped layer,
-# and because you already know Docker.
 FROM public.ecr.aws/lambda/python:3.12
 
 # Dependencies first so this layer is cached between code changes.
