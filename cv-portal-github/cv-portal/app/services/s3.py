@@ -1,15 +1,5 @@
 """S3 storage for CV files.
 
-The boto3 client is created once and then cached in a module-level global. On
-Lambda that global survives between warm invocations, so the TCP connection and
-credential lookup are paid for once rather than on every request.
-
-It is built lazily rather than at import time for one practical reason: mocking
-libraries such as moto patch botocore when they start, and a client constructed
-before that patching is never intercepted. Lazy creation keeps the code
-testable without a real AWS account.
-"""
-
 from __future__ import annotations
 
 import logging
